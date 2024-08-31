@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import RootRoters from './routes';
 import Header from './components/Header/Header';
+import './App.scss'
 
 function App() {
 

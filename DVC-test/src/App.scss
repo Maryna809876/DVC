@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    font-family: 'Rubik', 'sans-serif';
+
+}
+
+label {
+    color: #5E626B;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+select,
+input {
+    overflow: hidden;
+    color: #5E626B;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+    padding: 12px 12px 12px 24px;
+    border: 1px solid #E3E8EE;
+
+}
