@@ -1,6 +1,6 @@
 import React from "react";
 import './Button.scss';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Button = (props) => {
     const {
@@ -13,13 +13,17 @@ const Button = (props) => {
         ...restProps
     } = props;
 
-    let Element = to ? Link : 'button'
+    const location = useLocation();
+    const isActive = to === location.pathname
+
+    let Element = to ? Link : 'button';
+
 
     return (
         <>
             <Element
                 type={type}
-                className={className}
+                className={`${isActive ? 'active' : ''}`}
                 onClick={onClick}
                 to={to}
                 {...restProps}

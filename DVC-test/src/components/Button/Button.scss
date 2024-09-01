@@ -15,6 +15,9 @@ button {
     &:disabled {
         color: #C4C4C4;
         cursor: default;
-
     }
+}
+
+a.active {
+    background: #C4C4C4;
 }
