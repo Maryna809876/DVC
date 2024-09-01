@@ -11,4 +11,10 @@ button {
     border: 1px solid #C4C4C4;
     background-color: transparent;
     cursor: pointer;
+
+    &:disabled {
+        color: #C4C4C4;
+        cursor: default;
+
+    }
 }
