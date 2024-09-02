@@ -84,20 +84,6 @@ const EditUserPage = () => {
         console.log('tempUser updated:', tempUser);
     }, [tempUser]);
 
-    // useEffect(() => {
-    //     console.log
-    //         (user)
-    //     console.log
-    //         (initialUser)
-    //     console.log
-    //         (tempUser)
-    //     console.log
-    //         (isChanged)
-    // }, [user,
-    //     initialUser,
-    //     tempUser,
-    //     isChanged])
-
     return (
         <section className="edit-user-page">
             <Container>
@@ -174,7 +160,7 @@ const EditUserPage = () => {
                             className='btn-save'
                             type='submit'
                             children='Save'
-                            disabled={!isChanged} // Дезактивація кнопки, якщо немає змін
+                            disabled={!isChanged}
                         />
                     </div>
 

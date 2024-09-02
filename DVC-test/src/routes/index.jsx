@@ -10,6 +10,7 @@ export default () => {
             <Route path={'edit'} element={<EditUserPage />} />
             <Route path={"/user"} element={<UserPage />} />
 
+
             <Route path={"*"} element={<div>404 Page is not found</div>} />
         </Routes>
     )

@@ -23,7 +23,9 @@
                         display: flex;
                         align-items: center;
                         gap: 80px;
-                        width: fit-content;
+                        width: 230px;
+                        justify-content: space-between;
+
 
                         svg {
                             &.active {
@@ -43,6 +45,7 @@
                         transform: scaleY(0);
                         transform-origin: top;
                         transition: opacity 0.3s ease, transform 0.3s ease;
+                        background-color: #fff;
 
                         &.open {
                             opacity: 1;
@@ -52,10 +55,16 @@
                         .dropdown-item {
                             display: flex;
                             flex-direction: row-reverse;
+                            padding: 8px;
+
 
                             input {}
                         }
 
+                    }
+
+                    &.available {
+                        border: 1px solid black;
                     }
 
                 }
@@ -97,7 +106,6 @@
             tbody {
                 td {
                     padding: 28px 50px;
-                    /* Отступ внутри ячеек */
 
                     &:nth-child(2) {
                         width: 40%;
@@ -106,6 +114,10 @@
                 }
 
                 tr {}
+
+                .delete-user-btn {
+                    cursor: pointer;
+                }
             }
         }
 
