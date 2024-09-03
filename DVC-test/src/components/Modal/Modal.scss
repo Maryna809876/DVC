@@ -18,10 +18,23 @@
         background-color: white;
         width: 50%;
         margin: 0 auto;
+        padding: 40px 60px;
 
         .page-title {}
 
-        .modal-information-wrap {}
+        .modal-information-wrap {
+            display: grid;
+            grid-template-columns: repeat(2, 244px);
+            gap: 20px 40px;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
+        .btns-wrap {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+        }
     }
 
 }

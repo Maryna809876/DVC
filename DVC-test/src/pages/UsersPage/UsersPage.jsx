@@ -10,6 +10,7 @@ import Bin from '../../pictures/svg/usersPage/bin.svg?react'
 
 import './UsersPage.scss'
 import Button from "../../components/Button/Button";
+import Modal from "../../components/Modal/Modal";
 
 const UserPage = () => {
 
@@ -29,6 +30,7 @@ const UserPage = () => {
     const [filteredUsers, setFilteredUsers] = useState(users);
     const [isAvailableStatus, setIsAvailableStatus] = useState(false);
     const [isAvailableCountry, setIsAvailableCountry] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const toggleDropdown = (filterName) => {
         if ((filterName === 'countries' || filterName === 'statuses')
@@ -95,6 +97,14 @@ const UserPage = () => {
         }
         setFilteredUsers(newFilteredUsers);
     }, [selectedFilters, users])
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleModalClose = () => {
+        setIsModalOpen(false)
+    }
 
 
     return (
@@ -179,7 +189,7 @@ const UserPage = () => {
                             </div>
                             <Bin className='delete-filters-btn' onClick={handleDeleteAllFiters} />
                         </div>
-                        <Button children='Add User' />
+                        <Button children='Add User' onClick={handleModalOpen} />
                     </div>
 
                     {/* ////////////// */}
@@ -210,6 +220,8 @@ const UserPage = () => {
 
                 </div>
             </Container>
+
+            {isModalOpen && <Modal onClose={handleModalClose} setUsers={setUsers} users={users} />}
         </section>
     )
 }
