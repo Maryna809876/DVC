@@ -5,7 +5,7 @@ import UserPage from '../pages/UsersPage/UsersPage';
 
 export default () => {
     return (
-        <Routes>
+        <Routes >
             <Route path={'/'} element={<EditUserPage />} />
             <Route path={'edit'} element={<EditUserPage />} />
             <Route path={"/user"} element={<UserPage />} />
