@@ -30,6 +30,13 @@ const EditUserPage = () => {
         console.log(name, value);
 
         switch (name) {
+            case 'name':
+                const newName = value
+                setTempUser(prevUser => ({
+                    ...prevUser,
+                    name: newName
+                }))
+                break;
             case 'department':
                 console.log('department');
 
@@ -110,7 +117,7 @@ const EditUserPage = () => {
                                 <input
                                     type="text"
                                     name="name"
-                                    value={tempUser.name || ''}
+                                    value={tempUser.name}
                                     onChange={handleInputChange}
                                 />
                             </label>

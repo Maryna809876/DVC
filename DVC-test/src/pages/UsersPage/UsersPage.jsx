@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Container from "../../components/Container/Container";
 import usersData from '../../data/users';
@@ -106,6 +106,52 @@ const UserPage = () => {
         setIsModalOpen(false)
     }
 
+    const departmentsRef = useRef(null);
+    const countriesRef = useRef(null);
+    const statusesRef = useRef(null);
+
+
+    const handleClickOutside = (event) => {
+        if (
+            departmentsRef.current &&
+            !departmentsRef.current.contains(event.target) &&
+            dropdownStates.departments
+        ) {
+            setDropdownStates((prevState) => ({
+                ...prevState,
+                departments: false,
+            }));
+        }
+
+        if (
+            countriesRef.current &&
+            !countriesRef.current.contains(event.target) &&
+            dropdownStates.countries
+        ) {
+            setDropdownStates((prevState) => ({
+                ...prevState,
+                countries: false,
+            }));
+        }
+
+        if (
+            statusesRef.current &&
+            !statusesRef.current.contains(event.target) &&
+            dropdownStates.statuses
+        ) {
+            setDropdownStates((prevState) => ({
+                ...prevState,
+                statuses: false,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownStates]);
 
     return (
         <section className="user-page">
@@ -117,10 +163,13 @@ const UserPage = () => {
                     <p>Please add at least 3 departmetns to be able to proceed next steps.</p>
                     <div className="user-page-header">
                         <div className="filters-wrap">
+
                             {/* Departments Filter */}
-                            <div className="dropdown-checkbox available">
+                            <div ref={departmentsRef} className="dropdown-checkbox available">
                                 <div className="dropdown-header" onClick={() => toggleDropdown('departments')}>
-                                    {selectedFilters.departments.length > 0 ? `Selected ${selectedFilters.departments.length}` : 'Select Departments'}
+                                    {selectedFilters.departments.length > 0
+                                        ? `Selected ${selectedFilters.departments.length}`
+                                        : 'Select Departments'}
                                     <Arrow className={dropdownStates.departments ? 'active' : ''} />
                                 </div>
                                 <div className={`dropdown-list ${dropdownStates.departments ? 'open' : ''}`}>
@@ -140,7 +189,7 @@ const UserPage = () => {
                             </div>
 
                             {/* Countries Filter */}
-                            <div className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
+                            <div ref={countriesRef} className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
                                 <div className="dropdown-header" onClick={() => toggleDropdown('countries')}>
                                     {isAvailableCountry && selectedFilters.countries.length > 0 ? `Selected ${selectedFilters.countries.length}` : 'Select country'}
                                     <Arrow className={dropdownStates.countries ? 'active' : ''} />
@@ -163,7 +212,7 @@ const UserPage = () => {
                             </div>
 
                             {/* Statuses Filter */}
-                            <div className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
+                            <div ref={statusesRef} className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
                                 <div className="dropdown-header" onClick={() => toggleDropdown('statuses')}>
                                     {isAvailableStatus && selectedFilters.statuses.length > 0 ? `Selected ${selectedFilters.statuses.length}` : 'Select status'}
                                     <Arrow className={dropdownStates.statuses ? 'active' : ''} />
