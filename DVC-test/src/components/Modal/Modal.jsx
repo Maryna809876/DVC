@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import users from '../../data/users';
+import React, { useEffect, useState } from "react";
+import defaultUsers from '../../data/users';
 import departments from '../../data/departments';
 import countries from '../../data/countries';
 import statuses from '../../data/statuses';
@@ -7,6 +7,7 @@ import './Modal.scss'
 import Button from "../Button/Button";
 
 const Modal = ({ onClose, users, setUsers }) => {
+
 
     const [selectedFields, setSelectedFields] = useState({
         name: '',
@@ -24,18 +25,25 @@ const Modal = ({ onClose, users, setUsers }) => {
     }
 
     const handleAddUser = () => {
+        setUsers(prev => {
+            const updatedUsers = [
+                ...prev,
+                {
+                    name: selectedFields.name,
+                    department: { name: selectedFields.department },
+                    country: { name: selectedFields.country },
+                    status: { name: selectedFields.status }
+                }
+            ];
 
-        setUsers(prev => [
-            ...prev,
-            {
-                name: selectedFields.name,
-                department: { name: selectedFields.department },
-                country: { name: selectedFields.country },
-                status: { name: selectedFields.status }
-            }
-        ]);
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+            return updatedUsers;
+        });
+
         onClose();
-    }
+    };
+
 
     const handleCloseModal = () => {
         onClose()
@@ -47,15 +55,19 @@ const Modal = ({ onClose, users, setUsers }) => {
                 <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
                     <h1 className="page-title">add user</h1>
                     <div className="modal-information-wrap">
-                        <label>Full Name
+                        <div className="name-input">
+                            <label>Full Name</label>
                             <input
                                 type="text"
                                 name="name"
                                 placeholder="Enter full name"
                                 onChange={handleChange('name')}
                             />
-                        </label>
-                        <label>Department
+                        </div>
+
+
+                        <div className="custom-select">
+                            <label>Department</label>
                             <select
                                 name="department"
                                 onChange={handleChange('department')}
@@ -65,8 +77,11 @@ const Modal = ({ onClose, users, setUsers }) => {
                                     <option key={dep.id} value={dep.name}>{dep.name}</option>
                                 ))}
                             </select>
-                        </label>
-                        <label>Country
+                        </div>
+
+
+                        <div className="custom-select">
+                            <label>Country</label>
                             <select
                                 name="country"
                                 onChange={handleChange('country')}
@@ -77,8 +92,10 @@ const Modal = ({ onClose, users, setUsers }) => {
                                     <option key={country.id} value={country.name}>{country.name}</option>
                                 ))}
                             </select>
-                        </label>
-                        <label>Status
+                        </div>
+
+                        <div className="custom-select">
+                            <label>Status</label>
                             <select
                                 name="status"
                                 onChange={handleChange('status')}
@@ -89,16 +106,19 @@ const Modal = ({ onClose, users, setUsers }) => {
                                     <option key={status.id} value={status.name}>{status.name}</option>
                                 ))}
                             </select>
-                        </label>
+                        </div>
+
                     </div>
                     <div className="btns-wrap">
                         <Button
+                            style={{ padding: '14px 27px' }}
                             className='btn-cancel'
                             children='Cancel'
                             onClick={handleCloseModal}
                         />
 
                         <Button
+                            style={{ padding: '14px 62px' }}
                             className='btn-add'
                             children='Add'
                             onClick={handleAddUser}

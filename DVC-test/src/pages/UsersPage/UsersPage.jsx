@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Container from "../../components/Container/Container";
-import usersData from '../../data/users';
+import defaultUsers from '../../data/users';
 import departments from '../../data/departments';
 import countries from '../../data/countries';
 import statuses from '../../data/statuses';
@@ -26,11 +26,27 @@ const UserPage = () => {
         statuses: [],
     });
 
-    const [users, setUsers] = useState(usersData);
+    const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState(users);
     const [isAvailableStatus, setIsAvailableStatus] = useState(false);
     const [isAvailableCountry, setIsAvailableCountry] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    useEffect(() => {
+        const storedUsers = JSON.parse(localStorage.getItem('users'));
+        if (storedUsers && storedUsers.length > 0) {
+            setUsers(storedUsers);
+        } else {
+            localStorage.setItem('users', JSON.stringify(defaultUsers));
+            setUsers(defaultUsers);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (users.length > 0) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+    }, [users]);
 
     const toggleDropdown = (filterName) => {
         if ((filterName === 'countries' || filterName === 'statuses')
@@ -166,23 +182,32 @@ const UserPage = () => {
 
                             {/* Departments Filter */}
                             <div ref={departmentsRef} className="dropdown-checkbox available">
-                                <div className="dropdown-header" onClick={() => toggleDropdown('departments')}>
+                                <div
+                                    className={`dropdown-header ${selectedFilters.departments.length > 0 ? 'selected' : 'not-selected'}`}
+
+                                    onClick={() => toggleDropdown('departments')}>
                                     {selectedFilters.departments.length > 0
-                                        ? `Selected ${selectedFilters.departments.length}`
+                                        ? `Selected (${selectedFilters.departments.length})`
                                         : 'Select Departments'}
                                     <Arrow className={dropdownStates.departments ? 'active' : ''} />
                                 </div>
                                 <div className={`dropdown-list ${dropdownStates.departments ? 'open' : ''}`}>
                                     {departments.map((dep) => {
                                         return <div className="dropdown-item">
-                                            <label htmlFor={dep.name} className="dropdown-item"> {dep.name}</label>
                                             <input
                                                 type="checkbox"
+                                                id={dep.name}
                                                 name={dep.name}
                                                 value={dep.name}
                                                 checked={selectedFilters.departments.includes(dep.name)}
-                                                onChange={handleFilterChange('departments')} />
+                                                onChange={handleFilterChange('departments')}
+                                            />
+                                            <label htmlFor={dep.name}>
+                                                {dep.name}
+                                            </label>
                                         </div>
+
+
                                     })
                                     }
                                 </div>
@@ -190,22 +215,28 @@ const UserPage = () => {
 
                             {/* Countries Filter */}
                             <div ref={countriesRef} className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
-                                <div className="dropdown-header" onClick={() => toggleDropdown('countries')}>
-                                    {isAvailableCountry && selectedFilters.countries.length > 0 ? `Selected ${selectedFilters.countries.length}` : 'Select country'}
+                                <div
+                                    className={`dropdown-header ${isAvailableCountry && selectedFilters.countries.length > 0 ? 'selected' : 'not-selected'}`}
+                                    onClick={() => toggleDropdown('countries')}>
+                                    {isAvailableCountry && selectedFilters.countries.length > 0 ? `Selected (${selectedFilters.countries.length})` : 'Select country'}
                                     <Arrow className={dropdownStates.countries ? 'active' : ''} />
                                 </div>
                                 <div className={`dropdown-list ${dropdownStates.countries ? 'open' : ''}`}>
                                     {countries.map((country) => {
                                         return <div className="dropdown-item">
-                                            <label htmlFor={country.name} className="dropdown-item"> {country.name}</label>
                                             <input
                                                 type="checkbox"
+                                                id={country.name}
                                                 name={country.name}
                                                 value={country.name}
                                                 checked={selectedFilters.countries.includes(country.name)}
 
                                                 onChange={handleFilterChange('countries')} />
+                                            <label htmlFor={country.name}> {country.name}</label>
+
                                         </div>
+
+
                                     })
                                     }
                                 </div>
@@ -213,24 +244,27 @@ const UserPage = () => {
 
                             {/* Statuses Filter */}
                             <div ref={statusesRef} className={`dropdown-checkbox ${isAvailableStatus ? 'available' : ''}`}>
-                                <div className="dropdown-header" onClick={() => toggleDropdown('statuses')}>
-                                    {isAvailableStatus && selectedFilters.statuses.length > 0 ? `Selected ${selectedFilters.statuses.length}` : 'Select status'}
+                                <div
+                                    className={`dropdown-header ${isAvailableStatus && selectedFilters.statuses.length > 0 ? 'selected' : 'not-selected'}`}
+
+                                    onClick={() => toggleDropdown('statuses')}>
+                                    {isAvailableStatus && selectedFilters.statuses.length > 0 ? `Selected (${selectedFilters.statuses.length})` : 'Select status'}
                                     <Arrow className={dropdownStates.statuses ? 'active' : ''} />
                                 </div>
                                 <div className={`dropdown-list ${dropdownStates.statuses ? 'open' : ''}`}>
                                     {statuses.map((status) => {
                                         return <div className="dropdown-item" >
-                                            <label
-                                                htmlFor={status.name}
-                                                className="dropdown-item">
-                                                {status.name}</label>
+
                                             <input
                                                 type="checkbox"
+                                                id={status.name}
                                                 name={status.name}
                                                 value={status.name}
                                                 checked={selectedFilters.statuses.includes(status.name)}
-
                                                 onChange={handleFilterChange('statuses')} />
+                                            <label
+                                                htmlFor={status.name}>
+                                                {status.name}</label>
                                         </div>
                                     })
                                     }
@@ -241,26 +275,27 @@ const UserPage = () => {
                         <Button children='Add User' onClick={handleModalOpen} />
                     </div>
 
-                    {/* ////////////// */}
                     <table className="users-table">
                         <thead>
                             <tr>
-                                <td>Full Name</td>
-                                <td>Department</td>
-                                <td>Country</td>
-                                <td>Status</td>
-                                <td></td>
+                                <td className="col-fullname">Full Name</td>
+                                <td className="col-department">Department</td>
+                                <td className="col-country">Country</td>
+                                <td className="col-status">Status</td>
+                                <td className="col-delete"></td>
                             </tr>
                         </thead>
                         <tbody>
 
                             {filteredUsers.map((user) => {
                                 return <tr key={user.id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.department.name}</td>
-                                    <td>{user.country.name}</td>
-                                    <td>{user.status.name}</td>
-                                    <td><Bin className='delete-user-btn' onClick={() => handleDeleteUser(user.name)} /></td>
+                                    <td className="col-fullname">{user.name}</td>
+                                    <td className="col-department">{user.department.name}</td>
+                                    <td className="col-country">{user.country.name}</td>
+                                    <td className="col-status">{user.status.name}</td>
+                                    <td className="col-delete">
+                                        <Bin className="delete-user-btn" onClick={() => handleDeleteUser(user.name)} />
+                                    </td>
                                 </tr>
                             })}
                         </tbody>

@@ -1,127 +1,184 @@
 .user-page {
     .container {
-        .user-page-header {
-            display: flex;
-            justify-content: space-between;
+        .page-wrapper {
+            p {
+                font-weight: 300;
+            }
 
-            .filters-wrap {
+            .user-page-header {
                 display: flex;
-                gap: 12px;
+                justify-content: space-between;
 
-                .dropdown-checkbox {
-                    position: relative;
+                .filters-wrap {
+                    display: flex;
+                    gap: 12px;
 
-                    .dropdown-header {
-                        cursor: pointer;
-                        color: #C2C2C2;
-                        font-size: 14px;
-                        font-weight: 400;
-                        line-height: 20px;
-                        letter-spacing: 0.2px;
-                        padding: 14px 12px;
-                        border: 1px solid #E3E8EE;
-                        display: flex;
-                        align-items: center;
-                        gap: 80px;
-                        width: 230px;
-                        justify-content: space-between;
+                    .dropdown-checkbox {
+                        position: relative;
 
-
-                        svg {
-                            &.active {
-                                transform: rotate(180deg);
-                            }
-                        }
-
-                    }
-
-                    .dropdown-list {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-start;
-                        position: absolute;
-                        z-index: 10;
-                        opacity: 0;
-                        transform: scaleY(0);
-                        transform-origin: top;
-                        transition: opacity 0.3s ease, transform 0.3s ease;
-                        background-color: #fff;
-
-                        &.open {
-                            opacity: 1;
-                            transform: scaleY(1);
-                        }
-
-                        .dropdown-item {
+                        .dropdown-header {
+                            cursor: pointer;
+                            color: #C2C2C2;
+                            font-size: 14px;
+                            font-weight: 400;
+                            line-height: 20px;
+                            letter-spacing: 0.2px;
+                            padding: 14px 12px;
+                            border: 1px solid #E3E8EE;
                             display: flex;
-                            flex-direction: row-reverse;
-                            padding: 8px;
+                            align-items: center;
+                            gap: 80px;
+                            width: 230px;
+                            justify-content: space-between;
+
+                            &.selected {
+                                color: black;
+                            }
 
 
-                            input {}
+                            svg {
+                                &.active {
+                                    transform: rotate(180deg);
+                                }
+                            }
+
+                        }
+
+                        .dropdown-list {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            position: absolute;
+                            z-index: 10;
+                            opacity: 0;
+                            transform: scaleY(0);
+                            transform-origin: top;
+                            transition: opacity 0.3s ease, transform 0.3s ease;
+                            background-color: #fff;
+
+                            &.open {
+                                opacity: 1;
+                                transform: scaleY(1);
+                            }
+
+                            .dropdown-item {
+                                display: flex;
+                                align-items: center;
+                                padding: 8px;
+                                position: relative;
+
+
+                                input {
+                                    display: none;
+                                }
+
+                                label {
+                                    display: flex;
+                                    align-items: center;
+                                    cursor: pointer;
+                                    padding-left: 8px;
+                                    flex-direction: row;
+
+                                    &::before {
+                                        content: '';
+                                        width: 24px;
+                                        height: 24px;
+                                        border: 1px solid black;
+                                        display: inline-block;
+                                        margin-right: 8px;
+                                        border-radius: 0;
+                                        transition: background-color 0.3s ease;
+                                    }
+                                }
+
+                                input:checked+label::before {
+                                    background-color: black;
+
+
+                                }
+
+                                input:checked+label::after {
+                                    content: '';
+                                    position: absolute;
+                                    top: 10px;
+                                    left: 24px;
+                                    width: 8px;
+                                    height: 15px;
+                                    border: 1px solid white;
+                                    border-width: 0 2px 2px 0;
+                                    transform: rotate(45deg);
+                                }
+                            }
+
+
+
+
+                        }
+
+                        &.available {
+                            border: 1px solid black;
                         }
 
                     }
 
-                    &.available {
-                        border: 1px solid black;
+                    .delete-filters-btn {
+                        padding: 12px;
+                        border: 1px solid #C4C4C4;
                     }
-
-                }
-
-                .delete-filters-btn {
-                    padding: 12px;
-                    border: 1px solid #C4C4C4;
                 }
             }
-        }
 
-        .users-table {
-            width: 100%;
-            border: 1px solid #E3E8EE;
-            margin-top: 40px;
+            .users-table {
+                width: 100%;
+                border: 1px solid #E3E8EE;
+                margin-top: 40px;
+                table-layout: fixed;
+            }
+
+            .users-table {
+                width: 100%;
+                table-layout: fixed;
 
 
 
-            thead {
-
-
-                td {
+                td,
+                th {
                     padding: 28px 50px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+
+                }
+
+                thead {
                     color: #000;
                     font-size: 14px;
                     font-weight: 700;
                     line-height: 20px;
                     letter-spacing: 0.4px;
-                    border-bottom: 1px solid #E3E8EE;
-
-                    &:nth-child(2) {
-                        width: 40%;
-
-                    }
 
                 }
-            }
 
-            tbody {
-                td {
-                    padding: 28px 50px;
-
-                    &:nth-child(2) {
-                        width: 40%;
-
-                    }
+                .col-fullname {
+                    width: 25%;
                 }
 
-                tr {}
+                .col-department {
+                    width: 30%;
+                }
 
-                .delete-user-btn {
-                    cursor: pointer;
+                .col-country {
+                    width: 25%;
+                }
+
+                .col-status {
+                    width: 15%;
+                }
+
+                .col-delete {
+                    width: 5%;
                 }
             }
         }
-
-
 
     }
 

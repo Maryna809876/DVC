@@ -12,15 +12,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 10;
 
     .modal-wrapper {
         background-color: white;
         width: 50%;
         margin: 0 auto;
         padding: 40px 60px;
-
-        .page-title {}
+        border: 1px solid #000;
+        width: 720px;
 
         .modal-information-wrap {
             display: grid;
@@ -28,6 +28,45 @@
             gap: 20px 40px;
             justify-content: center;
             margin: 60px 0;
+
+            .name-input {
+                label {
+                    position: relative;
+                }
+
+                input {
+                    padding: 14px 12px 14px 24px;
+                    width: 244px;
+                    box-sizing: border-box;
+                }
+            }
+
+            .custom-select {
+                position: relative;
+
+
+                select {
+                    padding: 14px 12px 14px 24px;
+                    width: 244px;
+                    box-sizing: border-box;
+                    appearance: none;
+                    cursor: pointer;
+
+
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 55%;
+                    right: 5%;
+                    width: 16px;
+                    height: 16px;
+                    background: url('../../pictures/svg/modal/modalArrow.svg') no-repeat center;
+
+                    pointer-events: none;
+                }
+            }
         }
 
         .btns-wrap {

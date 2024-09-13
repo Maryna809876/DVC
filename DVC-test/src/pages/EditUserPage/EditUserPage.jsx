@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
-import users from '../../data/users';
+import defaultUsers from '../../data/users';
 import departments from '../../data/departments';
 import countries from '../../data/countries';
 import statuses from '../../data/statuses';
@@ -10,11 +10,21 @@ import Button from "../../components/Button/Button";
 
 const EditUserPage = () => {
 
+    const [users, setUsers] = useState([]);
     const [user, setUser] = useState({});
     const [initialUser, setInitialUser] = useState({});
     const [tempUser, setTempUser] = useState({});
-
     const [isChanged, setIsChanged] = useState(false)
+
+    useEffect(() => {
+        const storedUsers = JSON.parse(localStorage.getItem('users'));
+        if (storedUsers && storedUsers.length > 0) {
+            setUsers(storedUsers);
+        } else {
+            localStorage.setItem('users', JSON.stringify(defaultUsers));
+            setUsers(defaultUsers);
+        }
+    }, []);
 
     const handleSetUser = (e) => {
         const selectedUserName = e.target.value;
@@ -27,69 +37,72 @@ const EditUserPage = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
+        let updatedTempUser;
 
         switch (name) {
             case 'name':
-                const newName = value
-                setTempUser(prevUser => ({
-                    ...prevUser,
-                    name: newName
-                }))
+                updatedTempUser = {
+                    ...tempUser,
+                    name: value
+                };
                 break;
-            case 'department':
-                console.log('department');
 
-                const selectedDepartment = departments.find(dep => dep.name === value)
-                setTempUser(prevUser => ({
-                    ...prevUser,
+            case 'department':
+                const selectedDepartment = departments.find(dep => dep.name === value);
+                updatedTempUser = {
+                    ...tempUser,
                     department: selectedDepartment
-                }))
-                console.log(tempUser);
+                };
                 break;
 
             case 'country':
-                console.log('country');
-
-                const selectedCountry = countries.find(dep => dep.name === value)
-                setTempUser(prevUser => ({
-                    ...prevUser,
+                const selectedCountry = countries.find(country => country.name === value);
+                updatedTempUser = {
+                    ...tempUser,
                     country: selectedCountry
-                }))
-                console.log(tempUser);
+                };
                 break;
 
             case 'status':
-                console.log('status');
-
-                const selectedStatus = statuses.find(dep => dep.name === value)
-                setTempUser(prevUser => ({
-                    ...prevUser,
+                const selectedStatus = statuses.find(status => status.name === value);
+                updatedTempUser = {
+                    ...tempUser,
                     status: selectedStatus
-                }))
-                console.log(tempUser);
+                };
                 break;
 
             default:
-                break;
+                return;
         }
-        setIsChanged(true)
-    }
+
+        setTempUser(updatedTempUser);
+
+        if (JSON.stringify(updatedTempUser) === JSON.stringify(initialUser)) {
+            setIsChanged(false);
+        } else {
+            setIsChanged(true);
+        }
+    };
+
 
     const handleSave = () => {
+        const filteredUsers = users.filter(u => u.name !== user.name)
+
+        const updatedUsers = [...filteredUsers, tempUser]
+        console.log(updatedUsers);
+
+        localStorage.setItem('users', JSON.stringify(updatedUsers))
+
         setUser(tempUser);
         setInitialUser(tempUser);
-        setIsChanged(false)
+        setIsChanged(false);
+
     }
 
     const handleUndo = () => {
         setTempUser(initialUser);
         setIsChanged(false)
     }
-
-    useEffect(() => {
-        console.log('tempUser updated:', tempUser);
-    }, [tempUser]);
 
     return (
         <section className="edit-user-page">
