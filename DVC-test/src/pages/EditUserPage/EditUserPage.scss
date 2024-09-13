@@ -54,3 +54,31 @@ input {
     margin-top: 5px;
 
 }
+
+select {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url('../../pictures/svg/usersPage/arrow.svg');
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding: 12px 40px 12px 24px;
+    font-size: 14px;
+    color: #5E626B;
+    border: 1px solid #E3E8EE;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+    outline: none;
+    transition: border 0.3s ease;
+
+    &:hover {
+        border-color: #B0B7C3;
+    }
+
+    &:focus {
+        border-color: #3f4b62;
+    }
+}
